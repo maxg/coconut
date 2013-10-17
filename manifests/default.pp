@@ -17,6 +17,6 @@ Exec['add-apt node'] -> Package['nodejs']
 
 # Install packages
 package {
-  [ 'git', 'g++', 'make', 'nodejs', 'openjdk-6-jdk', 'python-software-properties', 'vim' ]:
+  [ 'git', 'g++', 'make', 'nodejs', 'openjdk-7-jdk', 'python-software-properties', 'vim' ]:
     ensure => 'installed';
 }
