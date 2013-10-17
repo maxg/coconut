@@ -1,2 +1,3 @@
 .vagrant
+/bin
 /node_modules
