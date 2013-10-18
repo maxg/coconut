@@ -1,0 +1,29 @@
+extends layout
+
+append head
+  title Find a Partner
+  script(src='/static/join.js')
+
+block content
+  .row
+    .col-md-12
+      h2 Find a Partner&nbsp;
+        small to work on &ldquo;#{exercise.title}&rdquo;
+      br
+      form#join.form-horizontal
+        .form-group
+          label.control-label.col-md-2 My joincode
+          .col-md-4
+            h3.joincode #{joincode.join(' ')}
+        .form-group
+          label.control-label.col-md-2 Partner's joincode
+          .col-md-4
+            .input-group
+              input.form-control#partner(type='text', autofocus=true)
+              span.input-group-btn
+                button.btn.btn-default Join
+        .form-group
+          .col-md-2
+          .col-md-4#status
+  script.
+    rendezvous(!{JSON.stringify(joincode)}, $('#join'), $('#partner'), $('#status'));

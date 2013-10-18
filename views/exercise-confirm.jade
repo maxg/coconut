@@ -1,0 +1,42 @@
+extends layout
+
+append head
+  title New Exercise
+
+block content
+  .row
+    .col-md-6
+      h2 Create an exercise
+      p Using source files from
+        strong  #{folder}
+        | .
+  .row
+    .col-md-6
+      form(method='post')
+        .form-group
+          p Package:
+          .btn-group-vertical(data-toggle='buttons')
+            label.btn.btn-default.text-left
+              input(type='radio', name='package', value='.')
+              i.icon-fixed-width.icon-folder-open-alt
+              |  default package
+            each val, index in components
+              - var package = components.slice(components.length-index-1, components.length).join('.');
+              label.btn.btn-default.text-left
+                input(type='radio', name='package', value=package)
+                i.icon-fixed-width.icon-folder-open
+                |  #{package}
+        .form-group
+          p Main method:
+          .btn-group-vertical(data-toggle='buttons')
+            for file in files
+              label.btn.btn-default.text-left
+                input(type='radio', name='main', value=file)
+                i.icon-fixed-width.icon-file-text
+                |  #{file}
+        .form-group
+          input.form-control(type='text', name='title', placeholder='Exercise title', required=true)
+        .form-group
+          button.btn.btn-default
+            i.icon-fixed-width.icon-ok
+            |  Create new exercise

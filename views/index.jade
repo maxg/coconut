@@ -1,0 +1,27 @@
+extends layout
+
+append head
+  title Coconut
+
+block content
+  .row
+    .col-md-6
+      if exercises.length || authstaff
+        h2 Start an exercise
+        .list-group
+          for exercise in exercises
+            a.list-group-item(href='/ex/'+exercise._id)= exercise.title
+        if authstaff
+          a.btn.btn-default(href='/new')
+            i.icon-fixed-width.icon-plus
+            |  Create a new exercise
+      h2 My projects
+      .list-group
+        if ! projects.length
+          .list-group-item.text-muted Choose an exercise above to start working
+        for project in projects
+          a.list-group-item(href='/'+project._id)= project.exercise.title
+            span.badge +
+              for user in project.users
+                if user != authusername
+                  |  #{user}

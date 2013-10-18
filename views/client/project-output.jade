@@ -1,0 +1,49 @@
+- var errorful = compile.errors && compile.errors.length > 0;
+ul.nav.nav-tabs
+  if errorful
+    li.active: a(href='#errors', data-toggle='tab')
+      i.icon-fixed-width.icon-warning-sign
+      |  #{compile.errors.length} Error#{compile.errors.length > 1 ? 's' : ''}
+  else
+    li: a(href='#errors', data-toggle='tab')
+      i.icon-fixed-width.icon-ok
+      |  0 Errors
+  li(class=errorful?'':'active'): a(href='#console', data-toggle='tab')
+    i.icon-fixed-width.icon-terminal
+    |  Output
+  li.pull-right
+    .btn-group#building
+      i.icon-cog.icon-spin
+      |  Building...
+    .btn-group#build-error.text-danger
+      i.icon-warning-sign
+      span#build-error-text
+    button#save.btn.btn-default
+      i.icon-fixed-width.icon-bug
+      |  Save, Compile, &amp; Run
+.tab-content
+  #errors.tab-pane(class=errorful?'active':'')
+    table.table.table-condensed
+      tbody
+        each error in (compile.errors || [])
+          - var broken = error.kind == 'ERROR';
+          tr
+            td(class=(broken ? 'text-danger' : 'text-warning'))
+              i(class=(broken ? 'icon-remove-sign' : 'icon-exclamation-sign'))
+            td
+              a.editor-jump(href='#',
+                           data-editor-file=error.source,
+                           data-editor-line=error.lineNumber,
+                           data-editor-column=error.columnNumber)
+                | #{error.source}:#{error.lineNumber}
+            td(width='100%')= error.message
+  pre#console.tab-pane(class=errorful?'':'active')
+    each out in (run || [])
+      if out.truncated
+        br
+        span.label.label-warning output truncated
+      else if out.timeout
+        br
+        span.label.label-warning timed out
+      else
+        span(class=(out.err ? 'text-danger' : ''))= out.$

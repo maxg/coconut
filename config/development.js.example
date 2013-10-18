@@ -1,0 +1,23 @@
+module.exports = {
+  staff: [ ... ],
+  web: {
+    host: '10.18.6.110.xip.io',
+    https: 4443,
+    share: 4444,
+    certDomain: 'MIT.EDU',
+    debugViews: true,
+    userFakery: true
+  },
+  dropbox: {
+    key: ...,
+    secret: ...
+  },
+  mongodb: {
+    type: 'mongo',
+    db: 'coconut-dev',
+    hostname: ...,
+    port: ...,
+    user: ...,
+    password: ...
+  }
+};

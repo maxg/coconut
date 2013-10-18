@@ -1,0 +1,22 @@
+extends layout
+
+append head
+  title= exercise.title
+
+block content
+  .row
+    .col-md-12
+      h2 #{exercise.title}&nbsp;
+        small created by #{exercise.creator}
+  .row
+    .col-md-6
+      .panel
+        .panel-body
+          ul.list-unstyled
+            for file in exercise.files
+              li
+                i.icon-fixed-width.icon-file-text
+                |  #{file}
+      a.btn.btn-default(href="/pair/#{exercise._id}")
+        i.icon-fixed-width.icon-user
+        |  Work on this exercise with a partner

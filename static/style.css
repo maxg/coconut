@@ -1,0 +1,114 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(//fonts.googleapis.com/css?family=Open+Sans+Condensed:700);
+
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding-top: 65px;
+  padding-bottom: 10px;
+}
+
+.navbar-fixed-top {
+  background-color: rgb(80, 60, 50);
+  border-bottom: 5px solid rgb(244, 238, 229);
+}
+.navbar .container * {
+  color: rgb(244, 238, 229);
+}
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: rgb(255, 255, 255);
+}
+.navbar-fixed-bottom {
+  min-height: 5px;
+  height: 5px;
+  background-color: rgb(85, 173, 127);
+  border: none;
+}
+
+.navbar-brand, h1, h2, h3, .btn {
+  font-weight: 700;
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+a {
+  color: rgb(245, 135, 120);
+}
+a:hover,
+a:focus {
+  color: rgb(204, 112, 100);
+}
+.nav > li > a:hover,
+.nav > li > a:focus {
+  background-color: rgb(245, 234, 233);
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: rgb(107, 205, 191);
+}
+.nav-tabs > li > span {
+  margin: 10px 15px;
+}
+
+.panel-body ul {
+  margin-bottom: 0;
+}
+
+.joincode {
+  position: absolute;
+  margin-top: -2px;
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+.tab-content {
+  x-padding-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 0 4px 0 0;
+}
+
+.btn.text-left {
+  text-align: left;
+}
+
+#output {
+  margin-top: 8px;
+}
+.editor {
+  min-height: 20px;
+}
+.editor.ace-eclipse .ace_gutter {
+  border-right: none;
+}
+#output .nav-tabs .btn {
+  margin-left: 10px;
+}
+#output .tab-content {
+  height: 200px;
+  overflow: scroll;
+}
+#building, #build-error {
+  display: none;
+}
+#build-error-text:before {
+  content: " ";
+}
+#errors table {
+  margin-bottom: 0;
+}
+#errors tr td:first-child {
+  padding-left: 10px;
+}
+#errors td {
+  border: none;
+}
+#console {
+  background: none;
+  border: none;
+}
+#console .label {
+}
+pre {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 12px;
+}

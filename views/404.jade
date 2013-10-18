@@ -1,0 +1,7 @@
+extends layout
+
+append head
+  title Not Found
+
+block content
+  h1 404 #{what ? what.replace(/\w/, function(c) { return c.toUpperCase(); }) : ''} Not Found
