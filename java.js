@@ -37,6 +37,11 @@ function javac(sources) {
   var emitter = new events.EventEmitter();
   
   temp.open({ suffix: '.zip' }, function(err, info) {
+    if (err) {
+      console.error('Temporary file error', err);
+      return emitter.emit('done', err);
+    }
+    
     var zip = info.path;
     var javac = nice('java', '-cp', 'bin', 'coconut.Compile', JSON.stringify(sources));
     
