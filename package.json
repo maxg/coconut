@@ -4,16 +4,16 @@
   "private": true,
   "dependencies": {
     "async": "~0.2.9",
-    "dropbox": "~0.10.1",
-    "express": "~3.4.1",
+    "dropbox": "~0.10.2",
+    "express": "~3.4.7",
     "jade": "~0.35.0",
     "jade-browser": "~0.0.14",
-    "mongodb": "~1.3.19",
+    "mongodb": "~1.3.23",
     "oauth": "~0.9.10",
     "share": "~0.6.3",
     "temp": "~0.6.0"
   },
   "engines": {
-    "node": "~0.10.20"
+    "node": "~0.10.24"
   }
 }
