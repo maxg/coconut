@@ -1,3 +1,4 @@
+var byline = require('byline');
 var events = require('events');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
@@ -14,6 +15,9 @@ exports.compileAndRun = function(files, package, main, callback) {
   
   javac(sources).once('done', function(err, compile, zip) {
     if (err) { return callback(err); }
+    if (compile.destination != zip) {
+      return callback(new Error('Compilation queue error'));
+    }
     java(zip, package + main.replace(/\.java$/, '')).once('done', function(err, run) {
       if (err) { return callback(err); }
       callback(null, { compile: compile, run: run });
@@ -33,6 +37,9 @@ function nice() {
   return child;
 }
 
+const compiler = spawn('java', [ '-cp', 'bin', 'coconut.Compile' ]);
+const queue = [];
+
 function javac(sources) {
   var emitter = new events.EventEmitter();
   
@@ -43,27 +50,32 @@ function javac(sources) {
     }
     
     var zip = info.path;
-    var javac = nice('java', '-cp', 'bin', 'coconut.Compile', JSON.stringify(sources));
-    
-    javac.stdout.pipe(fs.createWriteStream(zip));
-    
-    var out = '';
-    javac.stderr.setEncoding('utf8');
-    javac.stderr.on('data', function(data) { out += data; });
-    
-    javac.once('close', function() {
-      try {
-        emitter.emit('done', null, JSON.parse(out), zip);
-      } catch (err) {
-        console.error('Error compiling Java', out);
-        emitter.emit('done', err);
-      }
+    queue.push({
+      emitter: emitter,
+      zip: zip,
     });
+    compiler.stdin.write(JSON.stringify({
+      destination: zip,
+      sources: sources,
+    }) + '\n', 'utf8');
     
     fs.close(info.fd, function() { });
   });
+  
   return emitter;
 }
+
+compiler.stderr.pipe(process.stderr);
+compiler.stdout.setEncoding('utf8');
+byline(compiler.stdout).on('data', function(out) {
+  var req = queue.shift();
+  try {
+    req.emitter.emit('done', null, JSON.parse(out), req.zip);
+  } catch (err) {
+    console.error('Error compiling Java', out);
+    emitter.emit('done', err);
+  }
+});
 
 function java(zip, main) {
   var emitter = new events.EventEmitter();

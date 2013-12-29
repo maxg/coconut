@@ -29,6 +29,7 @@ public class Compile {
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
         CompilationTask task = compiler.getTask(compilation, fileManager, diagnostics, null, null, sources);
         this.success = task.call();
+        
         this.output = compilation.toString();
         this.errors = diagnostics.getDiagnostics();
         this.classes = fileManager.outputs;
@@ -52,28 +53,36 @@ public class Compile {
     }
     
     public static void main(String[] args) throws IOException {
-        JSONObject in = new JSONObject(args[0]);
-        List<JavaSourceString> sources = new ArrayList<JavaSourceString>();
-        for (Object key : in.keySet()) {
-            String name = (String)key;
-            sources.add(new JavaSourceString(name, in.getString(name)));
-        }
-        
-        Compile compile = new Compile(sources);
-        
-        if (compile.success && ! compile.classes.isEmpty()) {
-            ZipOutputStream zip = new ZipOutputStream(System.out);
-            for (JavaClassBytes bytes : compile.classes) {
-                zip.putNextEntry(new ZipEntry(bytes.getName()));
-                zip.write(bytes.bytes());
-                zip.closeEntry();
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        for (String line = in.readLine(); line != null; line = in.readLine()) {
+            
+            JSONObject input = new JSONObject(line);
+            JSONObject sources = input.getJSONObject("sources");
+            List<JavaSourceString> strings = new ArrayList<JavaSourceString>();
+            for (Object key : sources.keySet()) {
+                String name = (String)key;
+                strings.add(new JavaSourceString(name, sources.getString(name)));
             }
-            zip.close();
+            String zipfile = input.getString("destination");
+            
+            Compile compile = new Compile(strings);
+            
+            if (compile.success && ! compile.classes.isEmpty()) {
+                ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(zipfile));
+                for (JavaClassBytes bytes : compile.classes) {
+                    zip.putNextEntry(new ZipEntry(bytes.getName()));
+                    zip.write(bytes.bytes());
+                    zip.closeEntry();
+                }
+                zip.close();
+            }
+            
+            JSONObject output = new JSONObject();
+            output.put("destination", zipfile);
+            output.put("output", compile.output);
+            output.put("errors", json(compile.errors));
+            System.out.println(output);
         }
-        JSONObject err = new JSONObject();
-        err.put("output", compile.output);
-        err.put("errors", json(compile.errors));
-        System.err.println(err);
     }
 }
 

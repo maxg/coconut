@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "async": "~0.2.9",
+    "byline": "~4.1.1",
     "dropbox": "~0.10.2",
     "express": "~3.4.7",
     "jade": "~0.35.0",
