@@ -1,7 +1,7 @@
 extends layout
 
-append head
-  title Server Error
+prepend head
+  - title = 'Server Error'
 
 block content
   h1 Server Error

@@ -1,7 +1,7 @@
 extends layout
 
-append head
-  title= exercise.title
+prepend head
+  - title = exercise.title
 
 block content
   .row

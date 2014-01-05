@@ -1,7 +1,7 @@
 extends layout
 
-append head
-  title Request Error
+prepend head
+  - title = 'Request Error'
 
 block content
   h1 400 Request Error

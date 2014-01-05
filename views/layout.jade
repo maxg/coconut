@@ -1,10 +1,13 @@
 mixin pluralize(count, singular, plural)
   | #{count == 0 ? 'No' : count} #{count == 1 ? singular : plural || singular + 's'}
 
+- var title = '';
+
 doctype
 html
   head
     block head
+      title #{title} &#x1f334; Coconut
       meta(name='viewport', content='width=device-width, initial-scale=1.0')
       link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap.min.css')
       link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css')
