@@ -32,7 +32,7 @@ ul.nav.nav-tabs
               i(class=(broken ? 'icon-remove-sign' : 'icon-exclamation-sign'))
             td
               a.editor-jump(href='#',
-                           data-editor-file=error.source,
+                           data-editor-file=error.source.replace(/.*\//, ''),
                            data-editor-line=error.lineNumber,
                            data-editor-column=error.columnNumber)
                 | #{error.source}:#{error.lineNumber}
