@@ -426,7 +426,7 @@ protein
 provincial
 prowler
 proximate
-puberty
+public
 publisher
 pupil
 puppy
@@ -501,7 +501,7 @@ server
 shadow
 shamrock
 shell
-showgirl
+showboat
 skullcap
 skydive
 slingshot
