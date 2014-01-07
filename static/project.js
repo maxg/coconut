@@ -13,6 +13,7 @@ function editorSetup(div, filename) {
   });
   
   attachEditorDocument(editor, filename);
+  attachEditorCursors(editor, filename);
 }
 
 function attachEditorDocument(editor, filename) {
@@ -53,6 +54,43 @@ function attachEditorDocument(editor, filename) {
       editor.getSession().setScrollTop(oldTop + editor.renderer.$cursorLayer.config.lineHeight * lines);
     };
   }
+}
+
+function attachEditorCursors(editor, filename) {
+  sharejs.open(project + '~' + filename + '~cursors', 'json', shareURL + '/channel', function(err, doc) {
+    if ( ! doc.get()) { doc.set({}); }
+    
+    var mycursor = doc.at(username);
+    var sendTimeout = null;
+    function sendCursor() {
+      sendTimeout = null;
+      mycursor.set(editor.getCursorPosition());
+    }
+    editor.on('changeSelection', function() {
+      if ( ! sendTimeout) { sendTimeout = setTimeout(sendCursor, 750); }
+    });
+    
+    var cursors = {};
+    function updateCursor(who, now) {
+      if ( ! cursors[who]) {
+        var session = editor.getSession();
+        var range = editor.getSelectionRange(); // just a convenient way to get a Range
+        var start = range.start = session.getDocument().createAnchor(now); // fixed below...
+        var end = range.end = session.getDocument().createAnchor(now); // ... c'tor can't take noClip arg
+        var marker = session.addMarker(range, 'coconut_cursor', 'text');
+        cursors[who] = { start: start, end: end, marker: marker };
+      }
+      cursors[who].start.setPosition(now.row, now.column, true);
+      cursors[who].end.setPosition(now.row, now.column + 1, true);
+      editor.updateSelectionMarkers();
+    }
+    doc.at().on('replace', function(who, was, now) { updateCursor(who, now); });
+    
+    var current = doc.get();
+    Object.keys(current).forEach(function(who) {
+      if (who != username) { updateCursor(who, current[who]); }
+    });
+  });
 }
 
 function editorJump(filename, line, column) {

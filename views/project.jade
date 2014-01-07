@@ -8,6 +8,7 @@ append head
   script(src="#{shareURL}/channel/bcsocket.js")
   script(src="#{shareURL}/share/share.js")
   script(src="#{shareURL}/share/ace.js")
+  script(src="#{shareURL}/share/json.js")
 
 block content
   .row
@@ -31,6 +32,7 @@ block content
     #output.col-12
   
   script.
+    var username = !{JSON.stringify(authusername)};
     var project = !{JSON.stringify(project._id)};
     var shareURL = !{JSON.stringify(shareURL)};
   script(src='/static/project.js')

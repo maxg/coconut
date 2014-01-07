@@ -42,15 +42,15 @@ exports.attach = function(app) {
     browserChannel: { cors: 'https://' + config.web.host + ':' + config.web.https },
     auth: function(agent, action) {
       if ( ! action.docName) { return action.accept(); }
-      if ( ! /^\w+~\w+\.\w+$/.test(action.docName)) { return action.reject(); }
+      if ( ! /^\w+~\w+\.\w+(~\w+)?$/.test(action.docName)) { return action.reject(); }
       
       var parts = action.docName.split('~');
-      var projectID = parts[0], file = parts[1];
+      var projectID = parts[0], file = parts[1], subdoc = parts[2];
       if (false) { // TODO check that this user can edit this document
         return action.reject();
       }
       action.accept();
-      if (action.name == 'create') {
+      if (subdoc === undefined && action.name == 'create') {
         mongo(function(err, db) {
           if (err) { console.error('Error restoring document', err, action); }
           else { db.restoreProjectDocument(projectID, file, function() {}); }

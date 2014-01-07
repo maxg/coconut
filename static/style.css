@@ -87,6 +87,11 @@ a:focus {
 .editor.ace-eclipse .ace_gutter {
   border-right: none;
 }
+.editor .coconut_cursor {
+  position: absolute;
+  border-left: 2px solid rgb(245, 135, 120);
+  z-index: 3;
+}
 #output .nav-tabs .btn {
   margin-left: 10px;
 }
