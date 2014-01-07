@@ -1,5 +1,4 @@
 var editors = {};
-var documents = {};
 
 function editorSetup(div, filename) {
   var editor = ace.edit(div);
@@ -9,20 +8,59 @@ function editorSetup(div, filename) {
   editor.getSession().setMode('ace/mode/java');
   editor.commands.addCommand({
     name: 'Save',
-    bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+    bindKey: { win: 'Ctrl-S',  mac: 'Command-S' },
     exec: editorSave
   });
   
+  attachEditorDocument(editor, filename);
+}
+
+function attachEditorDocument(editor, filename) {
   sharejs.open(project + '~' + filename, 'text', shareURL + '/channel', function(err, doc) {
-    documents[filename] = doc;
+    editor.once('change', function() {
+      setTimeout(function() { editor.selection.moveCursorFileStart(); }, 0);
+    });
     doc.attach_ace(editor);
-    setTimeout(function() { editor.selection.moveCursorFileStart(); }, 0);
+    var listeners = editor.getSession().getDocument()._eventRegistry.change;
+    listeners.push(scrollFix(listeners.pop())); // ShareJS listener was added last
   });
+  
+  function scrollFix(editorListener) {
+    function countLines(delta) {
+      switch (delta.action) {
+      case 'insertText': return (delta.text.match(/\n/g) || []).length;
+      case 'removeText': return - (delta.text.match(/\n/g) || []).length;
+      case 'insertLines': return delta.lines.length;
+      case 'removeLines': return - delta.lines.length;
+      }
+      return 0;
+    }
+    
+    return function(change) {
+      var oldTop = editor.getSession().getScrollTop();
+      var result = editorListener.call(this, change);
+      if (result !== undefined) {
+        return; // editorListener returns a timer handle from check() only for local edits
+      }
+      if (change.data.range.start.row >= editor.getCursorPosition().row) {
+        return; // change is below the cursor
+      }
+      var lines = countLines(change.data);
+      if (lines == 0) {
+        return; // change did not add or remove lines
+      }
+      // correct scroll position for change that added/removed lines above us
+      editor.getSession().setScrollTop(oldTop + editor.renderer.$cursorLayer.config.lineHeight * lines);
+    };
+  }
 }
 
 function editorJump(filename, line, column) {
   $('#editor a[data-file="' + filename + '"]').tab('show');
-  editors[filename].moveCursorTo(line-1, column-1);
+  var editor = editors[filename];
+  editor.focus();
+  editor.clearSelection();
+  editor.moveCursorTo(line-1, column-1);
 }
 
 function editorSave() {
