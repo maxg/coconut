@@ -24,10 +24,17 @@ body {
   background-color: rgb(85, 173, 127);
   border: none;
 }
+.navbar-fixed-bottom .container {
+  position: relative;
+  top: -28px;
+}
+.navbar-fixed-bottom .container * {
+  color: rgb(85, 173, 127);
+}
 
-.navbar-brand, h1, h2, h3, .btn {
+.navbar-brand, h1, h2, h3, h4, h5, h6, .btn {
   font-weight: 700;
-  font-family: 'Open Sans Condensed', sans-serif;
+  font-family: 'Open Sans Condensed', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 a {
   color: rgb(245, 135, 120);
