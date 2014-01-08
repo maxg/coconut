@@ -19,11 +19,11 @@ block content
             a(href="#file#{index}", data-toggle='tab', data-file=filename)
               i.icon-fixed-width.icon-file-text
               |  #{filename}
-          li.pull-right
-            span.badge +
-              for user in project.users
-                if user != authusername
-                  |  #{user}
+        li.pull-right
+          span.badge +
+            for user in project.users
+              if user != authusername
+                |  #{user}
       .tab-content
         each filename, index in project.exercise.files
           .tab-pane(id="file#{index}", class=index==0?'active':'')
