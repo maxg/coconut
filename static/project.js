@@ -1,3 +1,5 @@
+ace.coconut_useragent = ace.require('ace/lib/useragent');
+
 var editors = {};
 
 function editorSetup(div, filename) {
@@ -119,7 +121,7 @@ $(document).ready(function() {
   
   $('#output').html(jade.render('project-output', { compile: {}, run: {} }));
   
-  var chromeHeight = $('.navbar-fixed-top').outerHeight(true) +
+  var chromeHeight = $('#editor').position().top * 2 +
                      $('.navbar-fixed-bottom').outerHeight(true) +
                      $('#editor .nav-tabs').outerHeight(true) +
                      $('#output').outerHeight(true);

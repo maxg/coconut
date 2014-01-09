@@ -12,14 +12,14 @@ append head
 
 block content
   .row
-    #editor.col-12
+    #editor
       ul.nav.nav-tabs
         each filename, index in project.exercise.files
           li(class=index==0?'active':'')
             a(href="#file#{index}", data-toggle='tab', data-file=filename)
               i.icon-fixed-width.icon-file-text
               |  #{filename}
-        li.pull-right
+        li
           span.badge +
             for user in project.users
               if user != authusername
@@ -29,7 +29,7 @@ block content
           .tab-pane(id="file#{index}", class=index==0?'active':'')
             .editor(data-file=filename)
   .row
-    #output.col-12
+    #output
   
   script.
     var username = !{JSON.stringify(authusername)};

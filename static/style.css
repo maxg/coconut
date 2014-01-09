@@ -18,6 +18,10 @@ body {
 .navbar-brand:focus {
   color: rgb(255, 255, 255);
 }
+.navbar-text {
+  margin-top: 17px;
+  margin-bottom: 13px;
+}
 .navbar-fixed-bottom {
   min-height: 5px;
   height: 5px;
@@ -69,15 +73,34 @@ a:focus {
   border-bottom: none;
 }
 .tab-content {
-  x-padding-top: 10px;
   border: 1px solid #ddd;
-  border-radius: 0 4px 0 0;
 }
 
 .btn.text-left {
   text-align: left;
 }
 
+body.project-view {
+  padding-top: 9px;
+}
+body.project-view .navbar-fixed-top {
+  z-index: auto;
+}
+body.project-view .navbar-fixed-top .container {
+  float: right;
+}
+
+#editor .nav-tabs > li {
+  z-index: 10;
+}
+#editor .nav-tabs > li:not(.active) > a:not(:hover) {
+  background: rgba(255, 255, 255, .85);
+  border-bottom-color: #ddd;
+}
+#editor .tab-content {
+  background: #fff;
+  position: relative;
+}
 #output {
   margin-top: 8px;
 }

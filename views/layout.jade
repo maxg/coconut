@@ -14,7 +14,7 @@ html
       link(rel='stylesheet', href='/static/style.css')
       script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
       script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/js/bootstrap.min.js')
-  body
+  body(class=filename.slice(settings.views.length+1, -5) + '-view')
     nav.navbar.navbar-fixed-top
       .container
         a.navbar-brand(href='/') Coconut
