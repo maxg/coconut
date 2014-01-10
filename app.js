@@ -49,6 +49,11 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+function staffonly(req, res, next) {
+  if (res.locals.authstaff) { return next(); }
+  res.status(401).render('401');
+}
+
 app.get('/', function(req, res, next) {
   async.auto({
     exercises: workspace.exercises,
@@ -78,7 +83,7 @@ app.get('/dropbox', function(req, res, next) {
   });
 });
 
-app.get('/new', function(req, res, next) {
+app.get('/new', staffonly, function(req, res, next) {
   workspace.findUser(res.locals.authusername, function(err, authuser) {
     if (err) { return next(err); }
     if ( ! authuser.dropbox) { return res.redirect('/dropbox'); }
@@ -100,7 +105,7 @@ app.get('/new', function(req, res, next) {
   });
 });
 
-app.get('/new/*', function(req, res, next) {
+app.get('/new/*', staffonly, function(req, res, next) {
   workspace.findUser(res.locals.authusername, function(err, authuser) {
     if (err) { return next(err); }
     if ( ! authuser.dropbox) { return res.redirect('/dropbox'); }
@@ -119,7 +124,7 @@ app.get('/new/*', function(req, res, next) {
   });
 });
 
-app.post('/new/*', function(req, res, next) {
+app.post('/new/*', staffonly, function(req, res, next) {
   workspace.findUser(res.locals.authusername, function(err, authuser) {
     if (err) { return next(err); }
     if ( ! authuser.dropbox) { return res.redirect('/dropbox'); }
