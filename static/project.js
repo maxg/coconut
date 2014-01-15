@@ -135,6 +135,17 @@ $(document).ready(function() {
     editorSetup(div, div.getAttribute('data-file'));
   });
   
+  // put keyboard focus on the editor...
+  function focusEditor() {
+    editors[$('.tab-pane.active .editor').data('file')].focus();
+  }
+  $('#editor .nav-tabs a').on('shown.bs.tab', focusEditor);
+  focusEditor();
+  
+  // ... and keep keyboard focus on the editor
+  $('#editor .nav-tabs').on('mousedown', false);
+  $('#output').on('mousedown', '.nav-tabs, #save, .editor-jump', false);
+  
   $('#output').on('click', '#save', function() {
     editorSave();
     return false;
