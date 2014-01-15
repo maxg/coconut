@@ -128,6 +128,12 @@ body.project-view .navbar-fixed-top .container {
 #build-error-text:before {
   content: " ";
 }
+.building #building {
+  display: inline-block;
+}
+.building .tab-pane {
+  opacity: 0.5;
+}
 #errors table {
   margin-bottom: 0;
 }

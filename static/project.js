@@ -104,7 +104,7 @@ function editorJump(filename, line, column) {
 }
 
 function editorSave() {
-  $('#building').css('display', 'inline-block');
+  $('#output').addClass('building');
   $('#build-error').hide();
   $.post(document.location.pathname + '/save').done(function(result) {
     $('#output').html(jade.render('project-output', result));
@@ -113,7 +113,7 @@ function editorSave() {
     $('#build-error-text').text(result.responseJSON.error || 'Unknown error');
     console && console.error && console.error(arguments);
   }).always(function() {
-    $('#building').hide();
+    $('#output').removeClass('building');
   });
 }
 
